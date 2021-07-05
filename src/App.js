@@ -1,22 +1,91 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
+import "./App.css";
+import Timer from "./components/Timer";
 
 function App() {
+  const [onoff, setOnoff] = useState(false);
+  const [originalTime, setOriginalTime] = useState(null);
+  const [currenttime, setCurrenttime] = useState(null);
+  const [streaktime, setStreaktime] = useState(null);
+
+  const startTimer = () => {
+    if (onoff === true) {
+      const endStreak = window.confirm("Give Up?");
+
+      if (endStreak) {
+        setOnoff(!onoff);
+      }
+    } else {
+      let i = new Date();
+      setOriginalTime(i);
+      setInterval(() => {
+        let ctime = new Date();
+        setCurrenttime(ctime);
+      }, 1000);
+
+      setOnoff(!onoff);
+    }
+  };
+
+  useEffect(() => {
+    if (onoff === true) {
+      let stTime = timeDiffCalc(currenttime, originalTime);
+      setStreaktime(stTime);
+    } else {
+      setOriginalTime(null);
+      setCurrenttime(null);
+      setStreaktime(null);
+    }
+  }, [currenttime]);
+
+  const timeDiffCalc = (dateFuture, dateNow) => {
+    var delta = Math.abs(dateFuture - dateNow) / 1000;
+
+    // calculate (and subtract) whole days
+    var days = Math.floor(delta / 86400);
+    delta -= days * 86400;
+
+    // calculate (and subtract) whole hours
+    var hours = Math.floor(delta / 3600) % 24;
+    delta -= hours * 3600;
+
+    // calculate (and subtract) whole minutes
+    var minutes = Math.floor(delta / 60) % 60;
+    delta -= minutes * 60;
+
+    // what's left is seconds
+    var seconds = Math.floor(delta % 60);
+    // return seconds;
+    let difference = "";
+    if (days > 0) {
+      difference += days === 1 ? `${days} day, ` : `${days} days, `;
+    }
+
+    difference +=
+      hours === 0 || hours === 1 ? `${hours} hour, ` : `${hours} hours, `;
+
+    difference +=
+      minutes === 0 || hours === 1
+        ? `${minutes} minutes `
+        : `${minutes} minutes `;
+
+    difference +=
+      seconds === 0 || minutes === 1
+        ? `${seconds} seconds `
+        : `${seconds} seconds `;
+
+    return difference;
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Timer
+          onoff={onoff}
+          setOnoff={setOnoff}
+          startTimer={startTimer}
+          streaktime={streaktime}
+        />
       </header>
     </div>
   );
