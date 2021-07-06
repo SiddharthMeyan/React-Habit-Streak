@@ -7,6 +7,20 @@ function App() {
   const [originalTime, setOriginalTime] = useState(null);
   const [currenttime, setCurrenttime] = useState(null);
   const [streaktime, setStreaktime] = useState(null);
+  const [totalmilisec, setTotalmilisec] = useState(null);
+  const [myachivement, setMyachivement] = useState("");
+
+  const achivement = [
+    "Noob",
+    "New Kid",
+    "Cool Kid",
+    "Firm believer",
+    "Apprentice",
+    "Resilient Bastard",
+    "Master",
+    "Grandmaster",
+    "Transcendend Entity",
+  ];
 
   const startTimer = () => {
     if (onoff === true) {
@@ -31,15 +45,18 @@ function App() {
     if (onoff === true) {
       let stTime = timeDiffCalc(currenttime, originalTime);
       setStreaktime(stTime);
+      // console.log(streaktime);
     } else {
       setOriginalTime(null);
       setCurrenttime(null);
       setStreaktime(null);
+      setMyachivement(null);
     }
   }, [currenttime]);
 
   const timeDiffCalc = (dateFuture, dateNow) => {
     var delta = Math.abs(dateFuture - dateNow) / 1000;
+    setTotalmilisec(delta);
 
     // calculate (and subtract) whole days
     var days = Math.floor(delta / 86400);
@@ -85,6 +102,11 @@ function App() {
           setOnoff={setOnoff}
           startTimer={startTimer}
           streaktime={streaktime}
+          currenttime={currenttime}
+          totalmilisec={totalmilisec}
+          myachivement={myachivement}
+          setMyachivement={setMyachivement}
+          achivement={achivement}
         />
       </header>
     </div>
