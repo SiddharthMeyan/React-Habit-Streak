@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-
-import { fire, db } from "./firebase/config";
+import { fire, db, timestamp } from "./firebase/config";
 import Timer from "./components/Timer";
 import { Main } from "./components/Main";
 
@@ -40,11 +39,13 @@ function App() {
         // const PrevScore = thingsRef
         //   .where("uid", "==", user.id)
         //   .onSnapshot(snap.docs.map(doc.data().highScore));
-        const thingsRef = db.collection("personalbest");
+        const timeCreated = timestamp();
+        const thingsRef = db.collection("History");
         thingsRef.add({
           uid: user.uid,
           highScore: streaktime,
           myachivement: myachivement,
+          createdAt: timeCreated,
         });
         setOnoff(!onoff);
       }
@@ -190,17 +191,6 @@ function App() {
             Login={Login}
           />
         )}
-        {/* <Timer
-          onoff={onoff}
-          setOnoff={setOnoff}
-          startTimer={startTimer}
-          streaktime={streaktime}
-          currenttime={currenttime}
-          totalmilisec={totalmilisec}
-          myachivement={myachivement}
-          setMyachivement={setMyachivement}
-          achivement={achivement}
-        /> */}
       </header>
     </div>
   );
