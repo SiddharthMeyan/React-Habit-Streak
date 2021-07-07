@@ -10,6 +10,8 @@ const Timer = ({
   myachivement,
   setMyachivement,
   achivement,
+  Logout,
+  user,
 }) => {
   const checkAchivement = () => {
     if (totalmilisec < 5) {
@@ -38,69 +40,78 @@ const Timer = ({
   }, [streaktime]);
   return (
     <>
-      <center>
-        <div className="container my-4">
-          <div className="col-md-4">
-            <div className="card" style={{ width: "18rem" }}>
-              <div className="card-body">
-                <h5 className="card-title">
-                  {streaktime ? streaktime : "Start Your Streak"}
-                </h5>
-                <h6 className="card-subtitle mb-2" style={{ color: "#ffff66" }}>
-                  {myachivement ? (
-                    <div>Current achivements:{myachivement}</div>
-                  ) : (
-                    <div></div>
-                  )}
-                </h6>
-                <div className="mt-5">
-                  <p
-                    className="text-muted "
-                    style={{ fontStyle: "italic", fontSize: "20px" }}
-                  >
-                    <Quotes />
-                  </p>
-                </div>
-                <div style={{ position: "relative" }}>
-                  {onoff ? (
-                    <>
-                      <button
-                        className="btn btn-danger mt-4"
-                        onClick={startTimer}
-                      >
-                        Reset Streak
-                      </button>
-                    </>
-                  ) : (
-                    <button
-                      className="btn btn-primary mt-4"
-                      style={{ position: "center" }}
-                      onClick={startTimer}
-                    >
-                      Start
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
+      <div className="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <header className="mb-auto">
+          <div>
+            <h5 className="float-md-start mb-0" style={{ fontSize: "20px" }}>
+              Welcome :<i> {user.email}</i>
+            </h5>
           </div>
+
+          <main className="px-3">
+            <div className="container">
+              <button className="logout" onClick={Logout}>
+                Logout
+              </button>
+            </div>
+          </main>
+        </header>
+      </div>
+      <div className="card text-center">
+        <div className="card-header">
+          <h5>{streaktime ? streaktime : "Start Your Streak"}</h5>
         </div>
-      </center>
-      <div class="wrapper">
-        <a
-          href="https://www.reddit.com/r/NoFap/top/?t=all"
-          target="_blank"
-          className="btn btn-sm"
-        >
-          Need Help?
-        </a>
-        <a
-          href="https://www.yourbrainonporn.com/tools-for-change-recovery-from-porn-addiction/rebooting-advice-observations-from-successful-rebooters/a-complete-beginners-guide-to-nofap/"
-          target="_blank"
-          className="btn btn-sm mx-2"
-        >
-          Guide to No fap
-        </a>
+        <div className="card-body">
+          <h5 className="card-title">
+            <h6 className="card-subtitle mb-2" style={{ color: "#ffff66" }}>
+              {myachivement ? (
+                <div>Current achivements:{myachivement}</div>
+              ) : (
+                <div></div>
+              )}
+            </h6>
+          </h5>
+          <p className="card-text">
+            <p
+              className="text-muted "
+              style={{ fontStyle: "italic", fontSize: "20px" }}
+            >
+              <Quotes />
+            </p>
+          </p>
+
+          {onoff ? (
+            <>
+              <button className="btn btn-danger" onClick={startTimer}>
+                Reset Streak
+              </button>
+            </>
+          ) : (
+            <button
+              className="btn btn-primary "
+              style={{ position: "center" }}
+              onClick={startTimer}
+            >
+              Start
+            </button>
+          )}
+        </div>
+        <div className="card-footer text-muted">
+          <a
+            href="https://www.reddit.com/r/NoFap/top/?t=all"
+            target="_blank"
+            className="btn btn-sm"
+          >
+            Need Help?
+          </a>
+          <a
+            href="https://www.yourbrainonporn.com/tools-for-change-recovery-from-porn-addiction/rebooting-advice-observations-from-successful-rebooters/a-complete-beginners-guide-to-nofap/"
+            target="_blank"
+            className="btn btn-sm mx-2"
+          >
+            Guide to No fap
+          </a>
+        </div>
       </div>
     </>
   );

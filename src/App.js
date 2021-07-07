@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+
+import { fire, db } from "./firebase/config";
 import Timer from "./components/Timer";
+import { Main } from "./components/Main";
 
 function App() {
   const [onoff, setOnoff] = useState(false);
@@ -9,6 +12,13 @@ function App() {
   const [streaktime, setStreaktime] = useState(null);
   const [totalmilisec, setTotalmilisec] = useState(null);
   const [myachivement, setMyachivement] = useState("");
+
+  // for firebase
+  const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isuser, setIsuser] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const achivement = [
     "👶🏻Noob",
@@ -27,6 +37,15 @@ function App() {
       const endStreak = window.confirm("Give Up?");
 
       if (endStreak) {
+        // const PrevScore = thingsRef
+        //   .where("uid", "==", user.id)
+        //   .onSnapshot(snap.docs.map(doc.data().highScore));
+        const thingsRef = db.collection("personalbest");
+        thingsRef.add({
+          uid: user.uid,
+          highScore: streaktime,
+          myachivement: myachivement,
+        });
         setOnoff(!onoff);
       }
     } else {
@@ -40,18 +59,6 @@ function App() {
       setOnoff(!onoff);
     }
   };
-
-  useEffect(() => {
-    if (onoff === true) {
-      let stTime = timeDiffCalc(currenttime, originalTime);
-      setStreaktime(stTime);
-    } else {
-      setOriginalTime(null);
-      setCurrenttime(null);
-      setStreaktime(null);
-      setMyachivement(null);
-    }
-  }, [currenttime]);
 
   const timeDiffCalc = (dateFuture, dateNow) => {
     var delta = Math.abs(dateFuture - dateNow) / 1000;
@@ -93,10 +100,97 @@ function App() {
     return difference;
   };
 
+  const SignUp = () => {
+    fire
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .catch((error) => {
+        var errorMessage = error.message;
+        setErrorMessage(errorMessage);
+      });
+    setEmail("");
+    setErrorMessage("");
+    setPassword("");
+  };
+
+  const Login = () => {
+    fire
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .catch((error) => {
+        var errorMessage = error.message;
+        setErrorMessage(errorMessage);
+      });
+
+    setEmail("");
+    setErrorMessage("");
+    setPassword("");
+  };
+
+  const Logout = () => {
+    fire.auth().signOut();
+  };
+
+  const authListener = () => {
+    fire.auth().onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser("");
+      }
+    });
+  };
+
+  useEffect(() => {
+    authListener();
+    if (user) {
+      if (onoff === true) {
+        let stTime = timeDiffCalc(currenttime, originalTime);
+        setStreaktime(stTime);
+      } else {
+        setOriginalTime(null);
+        setCurrenttime(null);
+        setStreaktime(null);
+        setMyachivement(null);
+      }
+    }
+  }, [currenttime]);
+
   return (
     <div className="App">
       <header className="App-header">
-        <Timer
+        {user ? (
+          <>
+            {/* <Timer Logout={Logout} user={user} /> */}
+            <Timer
+              Logout={Logout}
+              user={user}
+              onoff={onoff}
+              setOnoff={setOnoff}
+              startTimer={startTimer}
+              streaktime={streaktime}
+              currenttime={currenttime}
+              totalmilisec={totalmilisec}
+              myachivement={myachivement}
+              setMyachivement={setMyachivement}
+              achivement={achivement}
+            />
+          </>
+        ) : (
+          <Main
+            setEmail={setEmail}
+            email={email}
+            password={password}
+            setPassword={setPassword}
+            isuser={isuser}
+            setIsuser={setIsuser}
+            errorMessage={errorMessage}
+            setErrorMessage={errorMessage}
+            SignUp={SignUp}
+            Login={Login}
+          />
+        )}
+        {/* <Timer
           onoff={onoff}
           setOnoff={setOnoff}
           startTimer={startTimer}
@@ -106,7 +200,7 @@ function App() {
           myachivement={myachivement}
           setMyachivement={setMyachivement}
           achivement={achivement}
-        />
+        /> */}
       </header>
     </div>
   );
