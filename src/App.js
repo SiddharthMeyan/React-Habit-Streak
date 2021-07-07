@@ -11,15 +11,15 @@ function App() {
   const [myachivement, setMyachivement] = useState("");
 
   const achivement = [
-    "Noob",
-    "New Kid",
-    "Cool Kid",
-    "Firm believer",
-    "Apprentice",
-    "Resilient Bastard",
-    "Master",
-    "Grandmaster",
-    "Transcendend Entity",
+    "👶🏻Noob",
+    "👦🏻New Kid",
+    "👲🏻Cool Kid",
+    "🏄🏻‍♂️Firm believer",
+    "👨🏻‍🎓Apprentice",
+    "🏋🏻‍♂️Resilient Bastard",
+    "🧙🏻Master",
+    "🧙🏻‍♂️Grandmaster",
+    "🦸🏻‍♂️Transcendend Entity",
   ];
 
   const startTimer = () => {
@@ -45,7 +45,6 @@ function App() {
     if (onoff === true) {
       let stTime = timeDiffCalc(currenttime, originalTime);
       setStreaktime(stTime);
-      // console.log(streaktime);
     } else {
       setOriginalTime(null);
       setCurrenttime(null);
