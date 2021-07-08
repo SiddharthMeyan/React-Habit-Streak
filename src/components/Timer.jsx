@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import Quotes from "./Quotes";
 
 const Timer = ({
   onoff,
-  setOnoff,
+  getPrev,
   startTimer,
   streaktime,
   totalmilisec,
@@ -44,7 +45,14 @@ const Timer = ({
         <header className="mb-auto">
           <div>
             <h5 className="float-md-start mb-0" style={{ fontSize: "20px" }}>
-              Welcome :<i> {user.email}</i>
+              Welcome :<i> {user.email} </i>{" "}
+              <Link
+                to="/history"
+                className="r-link link text-underlined"
+                onClick={getPrev}
+              >
+                Previous Records
+              </Link>
             </h5>
           </div>
 

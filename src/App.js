@@ -3,6 +3,8 @@ import "./App.css";
 import { fire, db, timestamp } from "./firebase/config";
 import Timer from "./components/Timer";
 import { Main } from "./components/Main";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import History from "./components/History";
 
 function App() {
   const [onoff, setOnoff] = useState(false);
@@ -18,6 +20,7 @@ function App() {
   const [password, setPassword] = useState("");
   const [isuser, setIsuser] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [myHistory, setMyHistory] = useState([]);
 
   const achivement = [
     "👶🏻Noob",
@@ -30,6 +33,24 @@ function App() {
     "🧙🏻‍♂️Grandmaster",
     "🦸🏻‍♂️Transcendend Entity",
   ];
+
+  const getPrev = () => {
+    const documents = [];
+    db.collection("History")
+      .where("uid", "==", user.uid)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          console.log(doc.id, " => ", doc.data());
+          documents.push({ ...doc.data() });
+        });
+        setMyHistory(documents);
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
+      });
+  };
 
   const startTimer = () => {
     if (onoff === true) {
@@ -158,41 +179,52 @@ function App() {
   }, [currenttime]);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        {user ? (
-          <>
-            {/* <Timer Logout={Logout} user={user} /> */}
-            <Timer
-              Logout={Logout}
-              user={user}
-              onoff={onoff}
-              setOnoff={setOnoff}
-              startTimer={startTimer}
-              streaktime={streaktime}
-              currenttime={currenttime}
-              totalmilisec={totalmilisec}
-              myachivement={myachivement}
-              setMyachivement={setMyachivement}
-              achivement={achivement}
-            />
-          </>
-        ) : (
-          <Main
-            setEmail={setEmail}
-            email={email}
-            password={password}
-            setPassword={setPassword}
-            isuser={isuser}
-            setIsuser={setIsuser}
-            errorMessage={errorMessage}
-            setErrorMessage={errorMessage}
-            SignUp={SignUp}
-            Login={Login}
-          />
-        )}
-      </header>
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          <div className="App">
+            <header className="App-header">
+              {user ? (
+                <>
+                  {/* <Timer Logout={Logout} user={user} /> */}
+                  <Timer
+                    getPrev={getPrev}
+                    myHistory={myHistory}
+                    Logout={Logout}
+                    user={user}
+                    onoff={onoff}
+                    setOnoff={setOnoff}
+                    startTimer={startTimer}
+                    streaktime={streaktime}
+                    currenttime={currenttime}
+                    totalmilisec={totalmilisec}
+                    myachivement={myachivement}
+                    setMyachivement={setMyachivement}
+                    achivement={achivement}
+                  />
+                </>
+              ) : (
+                <Main
+                  setEmail={setEmail}
+                  email={email}
+                  password={password}
+                  setPassword={setPassword}
+                  isuser={isuser}
+                  setIsuser={setIsuser}
+                  errorMessage={errorMessage}
+                  setErrorMessage={errorMessage}
+                  SignUp={SignUp}
+                  Login={Login}
+                />
+              )}
+            </header>
+          </div>
+        </Route>
+        <Route path="/history">
+          <History user={user} myHistory={myHistory} />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
