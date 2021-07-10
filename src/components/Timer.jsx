@@ -17,19 +17,19 @@ const Timer = ({
   const checkAchivement = () => {
     if (totalmilisec < 5) {
       setMyachivement(achivement[0]);
-    } else if (totalmilisec < 10) {
+    } else if (totalmilisec < 86400) {
       setMyachivement(achivement[1]);
-    } else if (totalmilisec < 15) {
+    } else if (totalmilisec < 604800) {
       setMyachivement(achivement[2]);
-    } else if (totalmilisec < 20) {
+    } else if (totalmilisec < 1209600) {
       setMyachivement(achivement[3]);
-    } else if (totalmilisec < 25) {
+    } else if (totalmilisec < 2419200) {
       setMyachivement(achivement[4]);
-    } else if (totalmilisec < 30) {
+    } else if (totalmilisec < 3628800) {
       setMyachivement(achivement[5]);
-    } else if (totalmilisec < 35) {
+    } else if (totalmilisec < 6048000) {
       setMyachivement(achivement[6]);
-    } else if (totalmilisec < 40) {
+    } else if (totalmilisec < 7257600) {
       setMyachivement(achivement[7]);
     } else {
       setMyachivement(achivement[8]);
