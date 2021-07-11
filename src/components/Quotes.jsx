@@ -22,7 +22,6 @@ const Quotes = () => {
 
     const newArray = newdata.map((value) => value);
     let randNum = Math.floor(Math.random() * 100);
-    console.log(newArray[1].quote);
     setGenQuote(newArray[randNum].quote);
   };
 

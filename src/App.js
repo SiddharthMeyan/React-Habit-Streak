@@ -57,9 +57,6 @@ function App() {
       const endStreak = window.confirm("Give Up?");
 
       if (endStreak) {
-        // const PrevScore = thingsRef
-        //   .where("uid", "==", user.id)
-        //   .onSnapshot(snap.docs.map(doc.data().highScore));
         const timeCreated = timestamp();
         const thingsRef = db.collection("History");
         thingsRef.add({
@@ -186,7 +183,6 @@ function App() {
             <header className="App-header">
               {user ? (
                 <>
-                  {/* <Timer Logout={Logout} user={user} /> */}
                   <Timer
                     getPrev={getPrev}
                     myHistory={myHistory}

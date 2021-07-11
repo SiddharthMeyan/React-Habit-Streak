@@ -31,7 +31,11 @@ export const Main = ({
         onChange={(e) => setPassword(e.target.value)}
       />
       <br />
-      {errorMessage && <span>{errorMessage}</span>}
+      {errorMessage && (
+        <span style={{ color: "yellow", fontSize: "18px" }}>
+          *{errorMessage}
+        </span>
+      )}
       <div className="container">
         {isuser ? (
           <>
